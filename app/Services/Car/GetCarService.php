@@ -15,7 +15,23 @@ class GetCarService extends AbstractCarService
 	 */
 	public function handle(array $query): Collection
 	{
-		$query['limit'] = $query['limit'] ?? 10;
+		if ($query['associated_id'] ?? false) {
+			$query['where_has'] = $query['where_has'] ?? [];
+			$query['where_has'][] = [
+				'relation' => 'user_associated_cars',
+				'field' => 'user_id',
+				'value' => $query['associated_id'],
+			];
+		}
+
+		if ($query['owner_id'] ?? false) {
+			$query['where'] = $query['where'] ?? [];
+			$query['where'][] = [
+				'field' => 'owner_id',
+				'value' => $query['owner_id'],
+			];
+		}
+
 		return $this->repository->getAll($query);
 	}
 }

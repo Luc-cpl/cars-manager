@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Car;
 
+use App\Http\Controllers\AbstractController;
 use App\Services\Car\CreateCarService;
 use App\Services\Car\DeleteCarService;
 use App\Services\Car\GetCarByIdService;
@@ -9,7 +10,6 @@ use App\Services\Car\GetCarService;
 use App\Services\Car\RestoreCarService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use InvalidArgumentException;
 
 class CarController extends AbstractController
 {
@@ -19,8 +19,7 @@ class CarController extends AbstractController
     public function index(Request $request, GetCarService $service)
     {
         return $service->handle(
-            query: $request->query(),
-            deleted: $request->query('deleted', false)
+            query: $request->query()
         );
     }
 
@@ -48,14 +47,8 @@ class CarController extends AbstractController
      */
     public function destroy(Request $request, DeleteCarService $service): JsonResponse
     {
-        try { 
-            $carId = $request->route('carId');
-            $service->handle($carId);
-        } catch (InvalidArgumentException) {
-            return response()->json([
-                'message' => 'Car not found'
-            ], 404);
-        }
+        $carId = $request->route('carId');
+        $service->handle($carId);
 
         return response()->json([
             'message' => 'Car deleted'
@@ -67,14 +60,8 @@ class CarController extends AbstractController
      */
     public function forceDelete(Request $request, DeleteCarService $service): JsonResponse
     {
-        try { 
-            $carId = $request->route('carId');
-            $service->handle($carId, false);
-        } catch (InvalidArgumentException) {
-            return response()->json([
-                'message' => 'Car not found'
-            ], 404);
-        }
+        $carId = $request->route('carId');
+        $service->handle($carId, false);
 
         return response()->json([
             'message' => 'Car deleted'

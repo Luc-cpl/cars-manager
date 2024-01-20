@@ -12,6 +12,26 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+/**
+ * Table: users
+*
+* === Columns ===
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property \Carbon\Carbon|null $email_verified_at
+ * @property string $password
+ * @property string|null $remember_token
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property \Carbon\Carbon|null $deleted_at
+*
+* === Relationships ===
+ * @property-read \App\Models\Car[]|\Illuminate\Database\Eloquent\Collection $ownedCars
+ * @property-read \App\Models\Car[]|\Illuminate\Database\Eloquent\Collection $associatedCars
+ * @property-read \Laravel\Sanctum\PersonalAccessToken|null $tokens
+ * @property-read \Illuminate\Notifications\DatabaseNotification|null $notifications
+*/
 class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable , SoftDeletes;

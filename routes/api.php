@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\CarController;
+use App\Http\Controllers\Car\CarController;
+use App\Http\Controllers\Car\CarAssociationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,3 +43,15 @@ Route::post('/cars/{carId}/restore', CarController::class . '@restore')
 Route::delete('/cars/{carId}/force-delete', CarController::class . '@forceDelete')
     ->middleware('auth')
     ->name('cars.forceDelete');
+
+Route::get('/cars/{carId}/associate', CarAssociationController::class . '@index')
+    ->middleware('auth')
+    ->name('cars.associate');
+
+Route::post('/cars/{carId}/associate', CarAssociationController::class . '@store')
+    ->middleware('auth')
+    ->name('cars.associate');
+
+Route::delete('/cars/{carId}/associate', CarAssociationController::class . '@destroy')
+    ->middleware('auth')
+    ->name('cars.associate');

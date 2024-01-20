@@ -9,6 +9,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Table: cars
+*
+* === Columns ===
+ * @property int $id
+ * @property int $owner_id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property \Carbon\Carbon|null $deleted_at
+*
+* === Relationships ===
+ * @property-read \App\Models\User|null $owner
+ * @property-read \App\Models\Car[]|\Illuminate\Database\Eloquent\Collection $associatedUsers
+*/
 class Car extends Model
 {
     use HasFactory;
@@ -32,7 +46,7 @@ class Car extends Model
     public function associatedUsers(): BelongsToMany
     {
         return $this->belongsToMany(
-            related: Car::class,
+            related: User::class,
             table: 'user_associated_cars',
             foreignPivotKey: 'car_id',
             relatedPivotKey: 'user_id',

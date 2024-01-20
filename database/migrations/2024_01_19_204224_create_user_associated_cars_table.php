@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('car_id')->constrained('cars')->onDelete('cascade')->onUpdate('cascade');
+            $table->unique(['user_id', 'car_id']);
         });
     }
 
