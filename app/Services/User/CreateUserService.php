@@ -3,28 +3,24 @@
 namespace App\Services\User;
 
 use App\Models\User;
-use App\Repositories\Interfaces\UsersRepositoryInterface;
-use App\Services\Interfaces\ServiceInterface;
 use Illuminate\Auth\Events\Registered;
+use InvalidArgumentException;
 
-class CreateUserService implements ServiceInterface
+class CreateUserService extends AbstractUserService
 {
-	use Partials\PasswordHashTrait;
-
-	public function __construct(
-		private UsersRepositoryInterface $usersRepository
-	) {
-	}
-
-	/**
-	 * @return User
-	 */
-	public function handle(array ...$data)
+	public function handle(string $name, string $email, string $password): User
 	{
-		$user = $this->usersRepository->create(
-			name: $data['name'],
-			email: $data['email'],
-			password: $this->hashPassword($data['password']),
+		$user = $this->repository->getByEmail($email);
+
+		if ($user) {
+			/** @todo add a custom exception */
+			throw new InvalidArgumentException('User with this email already exists');
+		}
+
+		$user = $this->repository->create(
+			name: $name,
+			email: $email,
+			password: $this->hashPassword($password),
 		);
 
         event(new Registered($user));

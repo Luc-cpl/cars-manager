@@ -2,43 +2,24 @@
 
 namespace App\Services\User;
 
-use App\Events\Auth\PasswordChanged;
+use App\Events\AuthPasswordChanged;
 use App\Exceptions\InvalidPasswordException;
-use App\Repositories\Interfaces\UsersRepositoryInterface;
-use App\Services\Interfaces\ServiceInterface;
 
-class UpdatePasswordService implements ServiceInterface
+class UpdatePasswordService extends AbstractUserService
 {
-	use Partials\PasswordHashTrait;
-
-	public function __construct(
-		private UsersRepositoryInterface $usersRepository
-	) {
-	}
-
-	/**
-	 * @param int $userId
-	 * @param string $oldPassword
-	 * @param string $password
-	 * @return User
-	 */
-	public function handle(...$args)
+	public function handle(int $userId, string $oldPassword, string $password): void
 	{
-		[$userId, $oldPassword, $data] = $args;
-
-		$user = $this->usersRepository->getById($userId);
+		$user = $this->repository->getById($userId);
 
 		if (!$this->checkPassword($oldPassword, $user->password)) {
 			throw new InvalidPasswordException('Old password is incorrect');
 		}
 
-		$user = $this->usersRepository->update(
+		$user = $this->repository->update(
 			id: $userId,
-			password: $this->hashPassword($data['password']),
+			password: $this->hashPassword($password),
 		);
 
-        event(new PasswordChanged($user));
-
-		return $user;
+        event(new AuthPasswordChanged($user));
 	}
 }

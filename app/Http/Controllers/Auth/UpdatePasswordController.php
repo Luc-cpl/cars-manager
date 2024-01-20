@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AbstractController;
 use App\Services\User\UpdatePasswordService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 
-class RegisteredUserController extends Controller
+class RegisteredUserController extends AbstractController
 {
     /**
      * Handle an incoming registration request.

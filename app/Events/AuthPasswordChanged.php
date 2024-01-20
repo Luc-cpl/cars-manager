@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Events\Auth;
+namespace App\Events;
 
 use Illuminate\Queue\SerializesModels;
 
-class PasswordChanged
+class AuthPasswordChanged
 {
     use SerializesModels;
 

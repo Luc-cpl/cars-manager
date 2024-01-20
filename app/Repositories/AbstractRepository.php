@@ -16,9 +16,9 @@ abstract class AbstractRepository implements BaseRepositoryInterface
         return $this->model->find($id);
     }
 
-    public function getAll(array $context): Iterator
+    public function getAll(array $query): Iterator
     {
-        return $this->model->where($context)->get();
+        return $this->model->where($query)->get();
     }
 
     public function create(...$params): object
@@ -35,8 +35,17 @@ abstract class AbstractRepository implements BaseRepositoryInterface
         $this->model->find($params['id'])->update($params);
     }
 
-    public function delete(int $id): void
+    public function delete(int $id, bool $soft = true): void
     {
-        $this->model->find($id)->delete();
+        if ($soft) {
+            $this->model->find($id)->delete();
+        } else {
+            $this->model->find($id)->forceDelete();
+        }
+    }
+
+    public function restore(int $id): void
+    {
+        $this->model->withTrashed()->find($id)->restore();
     }
 }
