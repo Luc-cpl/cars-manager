@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Auth;
 class AuthenticatedSessionController extends Controller
 {
     /**
+     * Display the current user.
+     */
+    public function __invoke(Request $request): mixed
+	{
+		return $request->user();
+	}
+
+    /**
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): Response

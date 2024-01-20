@@ -10,4 +10,9 @@ trait PasswordHashTrait
 	{
 		return Hash::make($password);
 	}
+
+	private function checkPassword(string $password, string $hash): bool
+	{
+		return Hash::check($password, $hash);
+	}
 }

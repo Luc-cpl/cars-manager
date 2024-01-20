@@ -65,6 +65,16 @@ Reset the user password
 'password' => ['required', Rules\Password::defaults()],
 
 
+// @todo add this routes
+get '/me'
+post '/forgot-password'
+post '/reset-password'
+post '/update-password'
+get '/verify-email/{id}/{hash}'
+post '/email/verification-notification'
+post '/logout'
+
+
 ## License
 
 This application is licensed under the [MIT license](https://opensource.org/licenses/MIT).
