@@ -8,6 +8,7 @@ Fist, you need to install the dependencies and set the environment.
 composer install
 cp .env.example .env
 php artisan key:generate
+php artisan jwt:secret
 ```
 
 Then, you can run the dev environment and migrations.
@@ -23,7 +24,7 @@ Then, you can run the dev environment and migrations.
 
 ### POST /register
 
-Register a new user.
+Register a new user and retrieves a logged in jwt.
 
 ```json
 {
@@ -35,7 +36,6 @@ Register a new user.
 
 ### POST /login
 
-/** @todo add the JWT */
 Login with an existing user retrieving a JWT token
 
 ```json

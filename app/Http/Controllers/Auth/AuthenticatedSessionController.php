@@ -4,14 +4,17 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\AbstractController;
 use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedSessionController extends AbstractController
 {
+    use Partials\TokenTrait;
+
     /**
      * Display the current user.
+     * @todo change to RegisteredUserController
      */
     public function __invoke(Request $request): mixed
 	{
@@ -21,26 +24,35 @@ class AuthenticatedSessionController extends AbstractController
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): Response
+    public function store(LoginRequest $request): JsonResponse
     {
-        $request->authenticate();
+        $credentials = $request->only('email', 'password');
 
-        $request->session()->regenerate();
+        $token = Auth::attempt($credentials);
 
-        return response()->noContent();
+        if (!$token) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $this->respondWithToken($token);
     }
 
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): Response
+    public function destroy(): JsonResponse
     {
-        Auth::guard('web')->logout();
+        Auth::logout();
+        return response()->json(['message' => 'Successfully logged out']);
+    }
 
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return response()->noContent();
+    /**
+     * Refresh a token.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh()
+    {
+        return $this->respondWithToken(auth()->refresh());
     }
 }

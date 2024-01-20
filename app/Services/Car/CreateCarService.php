@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\User;
+namespace App\Services\Car;
 
 use App\Events\CarCreated;
 use App\Models\Car;

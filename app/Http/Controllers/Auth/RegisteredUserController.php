@@ -5,19 +5,21 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\AbstractController;
 use App\Services\User\CreateUserService;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends AbstractController
 {
+    use Partials\TokenTrait;
+
     /**
      * Handle an incoming registration request.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request, CreateUserService $service): Response
+    public function store(Request $request, CreateUserService $service): JsonResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -31,8 +33,8 @@ class RegisteredUserController extends AbstractController
             password: $request->password,
         );
 
-        Auth::login($user);
+        $token = Auth::login($user);
 
-        return response()->noContent();
+        return $this->respondWithToken($token);
     }
 }
