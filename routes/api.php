@@ -39,6 +39,6 @@ Route::post('/cars/{carId}/restore', CarController::class . '@restore')
     ->middleware('auth')
     ->name('cars.restore');
 
-Route::post('/cars/{carId}/force-delete', CarController::class . '@forceDelete')
+Route::delete('/cars/{carId}/force-delete', CarController::class . '@forceDelete')
     ->middleware('auth')
     ->name('cars.forceDelete');

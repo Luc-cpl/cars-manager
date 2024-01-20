@@ -3,9 +3,9 @@
 namespace App\Repositories;
 
 use App\Repositories\Interfaces\BaseRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
-use Iterator;
 
 abstract class AbstractRepository implements BaseRepositoryInterface
 {
@@ -13,10 +13,10 @@ abstract class AbstractRepository implements BaseRepositoryInterface
 
     public function getById(int $id): ?object
     {
-        return $this->model->find($id);
+        return $this->model->withTrashed()->find($id);
     }
 
-    public function getAll(array $query): Iterator
+    public function getAll(array $query): Collection
     {
         return $this->model->where($query)->get();
     }
@@ -37,10 +37,16 @@ abstract class AbstractRepository implements BaseRepositoryInterface
 
     public function delete(int $id, bool $soft = true): void
     {
+        $entity = $this->getById($id);
+
+        if (!$entity) {
+            throw new InvalidArgumentException('Entity not found');
+        }
+
         if ($soft) {
-            $this->model->find($id)->delete();
+            $entity->delete();
         } else {
-            $this->model->find($id)->forceDelete();
+            $entity->forceDelete();
         }
     }
 

@@ -11,8 +11,8 @@ use InvalidArgumentException;
 class CreateCarService extends AbstractCarService
 {
 	public function __construct(
-		private CarsRepositoryInterface $repository,
-		private UsersRepositoryInterface $usersRepository,
+		protected CarsRepositoryInterface $repository,
+		protected UsersRepositoryInterface $usersRepository,
 	) {
 	}
 

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\User\CreateCarService;
-use App\Services\User\DeleteCarService;
-use App\Services\User\GetCarByIdService;
-use App\Services\User\GetCarService;
-use App\Services\User\RestoreCarService;
+use App\Services\Car\CreateCarService;
+use App\Services\Car\DeleteCarService;
+use App\Services\Car\GetCarByIdService;
+use App\Services\Car\GetCarService;
+use App\Services\Car\RestoreCarService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use InvalidArgumentException;
 
 class CarController extends AbstractController
 {
@@ -27,7 +29,7 @@ class CarController extends AbstractController
      */
     public function store(Request $request, CreateCarService $createCarService)
     {
-        $createCarService->handle(
+        return $createCarService->handle(
             ownerId: $request->user()->id
         );
     }
@@ -44,27 +46,51 @@ class CarController extends AbstractController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, DeleteCarService $service)
+    public function destroy(Request $request, DeleteCarService $service): JsonResponse
     {
-        $carId = $request->route('carId');
-        $service->handle($carId);
+        try { 
+            $carId = $request->route('carId');
+            $service->handle($carId);
+        } catch (InvalidArgumentException) {
+            return response()->json([
+                'message' => 'Car not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'Car deleted'
+        ], 200);
     }
 
     /**
      * Force delete the specified resource from storage.
      */
-    public function forceDelete(Request $request, DeleteCarService $service)
+    public function forceDelete(Request $request, DeleteCarService $service): JsonResponse
     {
-        $carId = $request->route('carId');
-        $service->handle($carId, false);
+        try { 
+            $carId = $request->route('carId');
+            $service->handle($carId, false);
+        } catch (InvalidArgumentException) {
+            return response()->json([
+                'message' => 'Car not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'Car deleted'
+        ], 200);
     }
 
     /**
      * Restore the specified resource from storage.
      */
-    public function restore(Request $request, RestoreCarService $service)
+    public function restore(Request $request, RestoreCarService $service): JsonResponse
     {
         $carId = $request->route('carId');
         $service->handle($carId);
+
+        return response()->json([
+            'message' => 'Car restored'
+        ], 200);
     }
 }

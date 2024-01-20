@@ -2,14 +2,14 @@
 
 namespace App\Repositories\Interfaces;
 
+use Illuminate\Database\Eloquent\Collection;
 use InvalidArgumentException;
-use Iterator;
 
 interface BaseRepositoryInterface
 {
     public function getById(int $id): ?object;
 
-    public function getAll(array $query): Iterator;
+    public function getAll(array $query): Collection;
 
     public function create(...$params): object;
 

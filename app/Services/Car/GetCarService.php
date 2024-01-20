@@ -2,7 +2,7 @@
 
 namespace App\Services\Car;
 
-use Iterator;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * This class is a service for getting a car by id.
@@ -13,7 +13,7 @@ class GetCarService extends AbstractCarService
 	/**
 	 * @todo: Add deleted logic
 	 */
-	public function handle(array $query, bool $deleted = false): Iterator
+	public function handle(array $query): Collection
 	{
 		$query['limit'] = $query['limit'] ?? 10;
 		return $this->repository->getAll($query);
