@@ -92,7 +92,7 @@ class UserController extends AbstractController
      */
     public function destroy(Request $request, DeleteUserService $service)
     {
-        if ($request->user()->id === $request->route('userId')) {
+        if ($request->user()->id === (int) $request->route('userId')) {
             throw new InvalidArgumentException('You cannot delete yourself');
         }
 

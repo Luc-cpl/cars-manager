@@ -128,14 +128,23 @@ test('can not update a user sensitive data with no password confirmation', funct
 
 test('can delete a user', function () {
 	$user = User::factory()->create();
+	$otherUser = User::factory()->create();
 
-	$response = $this->actingAs($user)->delete('/api/users/' . $user->id);
+	$response = $this->actingAs($user)->delete('/api/users/' . $otherUser->id);
 
 	$response->assertStatus(200);
 
 	$this->assertSoftDeleted('users', [
-		'id' => $user->id,
+		'id' => $otherUser->id,
 	]);
+});
+
+test('can not delete yourself', function () {
+	$user = User::factory()->create();
+
+	$response = $this->actingAs($user)->delete('/api/users/' . $user->id);
+
+	$response->assertStatus(422);
 });
 
 test('can restore a user', function () {
