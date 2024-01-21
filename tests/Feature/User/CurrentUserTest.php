@@ -2,7 +2,7 @@
 
 use App\Models\User;
 
-test('check /api/me routes authorization', function () {
+test('can not go through /api/me routes without authorization', function () {
 	$this->withHeaders([
 		'Accept' => 'application/json',
 	]);

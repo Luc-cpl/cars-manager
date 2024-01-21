@@ -3,6 +3,22 @@
 use App\Models\Car;
 use App\Models\User;
 
+test('can not go through /api/cars routes without authorization', function () {
+	$this->withHeaders([
+		'Accept' => 'application/json',
+	]);
+	$this->get('/api/cars')->assertStatus(401);
+	$this->post('/api/cars')->assertStatus(401);
+	$this->get('/api/cars/1')->assertStatus(401);
+	$this->put('/api/cars/1')->assertStatus(401);
+	$this->delete('/api/cars/1')->assertStatus(401);
+	$this->post('/api/cars/1/restore')->assertStatus(401);
+	$this->get('/api/cars/1/associate')->assertStatus(401);
+	$this->post('/api/cars/1/associate')->assertStatus(401);
+	$this->delete('/api/cars/1/associate')->assertStatus(401);
+	$this->delete('/api/cars/1/associate/1')->assertStatus(401);
+});
+
 test('can list cars', function () {
 	$user = User::factory()->create();
 	Car::factory()->count(5)->create(['owner_id' => $user->id]);
