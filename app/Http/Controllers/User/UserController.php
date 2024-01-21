@@ -46,37 +46,27 @@ class UserController extends AbstractController
         UpdateUserDataService $dataService,
     ) {
         $request->validate([
-			'password' => ['string', 'min:6'],
-            'new_password' => [Rules\Password::defaults()],
+            'password_confirmation' => 'required_with:password,email',
+			'password' => [Rules\Password::defaults()],
             'email' => ['email', 'unique:users'],
             'name' => ['string', 'min:3', 'max:255'],
         ]);
 
-        $isCurrentUser = !$request->route('userId') || $request->user()->id === (int) $request->route('userId');
         $userId = $request->route('userId') ?? $request->user()->id;
 
-        $isUpdatingSensitiveData = $request->has('password') || $request->has('new_password') || $request->has('email');
+        $isUpdatingSensitiveData = $request->has('password') || $request->has('email');
 
-        if ($request->has('password') && $isCurrentUser) {
+        if ($isUpdatingSensitiveData) {
             $verifyPasswordService->handle(
-                userId: $userId,
-                password: $request->password,
+                userId: $request->user()->id,
+                password: $request['password_confirmation'],
             );
-        } elseif (!$request->has('password') && $isCurrentUser && $isUpdatingSensitiveData) {
-            throw new InvalidArgumentException('Password is required');
         }
 
-        $setNewPassword = $isCurrentUser && $request->has('new_password');
-        $setNewPassword = $setNewPassword || !$isCurrentUser && $request->has('password');
-
-        if ($setNewPassword) {
-            $password = $request->has('new_password')
-                ? $request->new_password
-                : $request->password;
-
+        if ($request->has('password')) {
             $passwordService->handle(
                 userId: $userId,
-                password: $password,
+                password: $request->password,
             );
         }
 

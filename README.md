@@ -67,11 +67,12 @@ Show current user
 ### PUT /api/me
 
 update current user
+If you want to update the password or email, you need to send the `password_confirmation` field with the current password.
 
 ```json
 {
-  "password": "your_current_password", // *required
-  "new_password": "updated_password",
+  "password_confirmation": "your_current_password", // *required with password and email
+  "password": "updated_password",
   "email": "updated_email",
   "name": "Updated name"
 }
@@ -92,10 +93,11 @@ Retrieve a specific user by ID
 ### PUT /api/users/{id}
 
 Update a specific user by ID.
-If this request whas made by the same user, it will behave as the `/me` route (same arguments).
+If you want to update the password or email, you need to send the `password_confirmation` field with your current password.
 
 ```json
 {
+  "password_confirmation": "your_current_password", // *required with password and email
   "password": "updated_password",
   "email": "updated_email",
   "name": "Updated name"

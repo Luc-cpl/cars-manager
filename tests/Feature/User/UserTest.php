@@ -86,7 +86,7 @@ test('can get a deleted user', function () {
 	expect($response['deleted_at'])->toBe($user->deleted_at->toJSON());
 });
 
-test('can update a different user', function () {
+test('can update a user', function () {
     $user = User::factory()->create();
 	$userToUpdate = User::factory()->create();
 
@@ -94,6 +94,7 @@ test('can update a different user', function () {
         'name' => 'Updated Name',
         'email' => 'updatedemail@example.com',
 		'password' => 'password',
+		'password_confirmation' => 'password',
     ];
 
     $response = $this->actingAs($user)->put('/api/users/' . $userToUpdate->id, $updatedUserData);
@@ -110,17 +111,19 @@ test('can update a different user', function () {
 	]));
 });
 
-/** @todo add a password_confirmation to update all sensitive data  */
-test('can not update self with no password confirmation', function () {
+test('can not update a user sensitive data with no password confirmation', function () {
 	$user = User::factory()->create();
 
 	$updatedUserData = [
-		'name' => 'Updated Name',
 		'email' => 'updatedemail@email.com',
 	];
 
+	$this->withHeaders([
+		'Accept' => 'application/json',
+	]);
+
 	$response = $this->actingAs($user)->put('/api/users/' . $user->id, $updatedUserData);
-	$response->assertStatus(400);
+	$response->assertStatus(422);
 });
 
 test('can delete a user', function () {

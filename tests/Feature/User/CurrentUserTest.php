@@ -37,7 +37,7 @@ test('can update current user email', function () {
 
     $updatedUserData = [
         'email' => 'updatedemail@example.com',
-		'password' => 'password',
+		'password_confirmation' => 'password',
     ];
 
     $response = $this->actingAs($user)->put('/api/me', $updatedUserData);
@@ -52,7 +52,7 @@ test('can not update current user email with invalid password', function () {
 
 	$updatedUserData = [
 		'email' => 'updatedemail@example.com',
-		'password' => 'invalid_password',
+		'password_confirmation' => 'invalid_password',
     ];
 
 	$response = $this->actingAs($user)->put('/api/me', $updatedUserData);
@@ -64,15 +64,15 @@ test('can update current user password', function () {
 	$user = User::factory()->create();
 
 	$updatedUserData = [
-		'password' => 'password',
-		'new_password' => 'new_password',
+		'password_confirmation' => 'password',
+		'password' => 'new_password',
 	];
 
 	$this->actingAs($user)->put('/api/me', $updatedUserData);
 
 	$this->assertTrue((bool) auth()->attempt([
 		'email' => $user->email,
-		'password' => $updatedUserData['new_password'],
+		'password' => $updatedUserData['password'],
 	]));
 });
 

@@ -33,7 +33,7 @@ class Handler extends ExceptionHandler
         $this->renderable(fn (InvalidArgumentException $exception) => response()->json([
             'error' => $exception->getMessage(),
             'code' => 'invalid_argument',
-        ], 400));
+        ], 422));
 
         $this->renderable(fn (UniqueConstraintViolationException $exception) => response()->json([
             'error' => 'Unique constraint violation',
