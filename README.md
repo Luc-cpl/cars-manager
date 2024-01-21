@@ -170,10 +170,21 @@ Get the list of users associated with this car
 ### POST /cars/{id}/associate
 
 Associate the current user with the car
+It also accepts a `user_id` field allowing set another user.
+
+```json
+{
+  "user_id": 1
+}
+```
 
 ### DELETE /cars/{id}/associate
 
 Deletes the current user assocation with the car
+
+### DELETE /cars/{id}/associate/{user_id}
+
+Removev a user assocation with the car by user ID
 
 
 ## License

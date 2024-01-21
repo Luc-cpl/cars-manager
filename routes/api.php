@@ -86,3 +86,7 @@ Route::post('/cars/{carId}/associate', [CarAssociationController::class, 'store'
 Route::delete('/cars/{carId}/associate', [CarAssociationController::class, 'destroy'])
     ->middleware('auth')
     ->name('cars.associate');
+
+Route::delete('/cars/{carId}/associate/{userId}', [CarAssociationController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('cars.associate.user');

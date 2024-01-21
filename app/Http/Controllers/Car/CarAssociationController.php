@@ -23,9 +23,13 @@ class CarAssociationController extends AbstractController
      */
     public function store(Request $request, AssociateCarWithUserService $createCarService)
     {
+      $request->validate([
+        'user_id' => ['exists:users,id'],
+      ]);
+
       return $createCarService->handle(
         carId: $request->route('carId'),
-        userId: $request->user()->id,
+        userId: $request->input('user_id') ?? $request->user()->id,
       );
     }
 
@@ -36,7 +40,7 @@ class CarAssociationController extends AbstractController
     {
       return $service->handle(
         carId: $request->route('carId'),
-        userId: $request->user()->id,
+        userId: $request->route('userId') ?? $request->user()->id,
       );
     }
 }
