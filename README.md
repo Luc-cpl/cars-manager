@@ -27,6 +27,13 @@ You can run the tests with the following command:
 ./vendor/bin/sail test
 ```
 
+Also you can generate a HTML coverage report with:
+
+```bash
+./vendor/bin/sail up -d
+./vendor/bin/sail test --coverage-html coverage
+```
+
 ## Endpoints
 
 All routes needs a JWT token in `Authorization` header (bearer auth) except:

@@ -178,6 +178,18 @@ test('can associate a car with another user', function () {
 	]);
 });
 
+test('can not associate a car with his owner', function () {
+	$user = User::factory()->create();
+	$carOwner = User::factory()->create();
+	$car = Car::factory()->create(['owner_id' => $carOwner->id]);
+
+	$this->actingAs($user)
+		->post('/api/cars/' . $car->id . '/associate', [
+			'user_id' => $carOwner->id
+		])
+		->assertStatus(422);
+});
+
 test('can disassociate a car with current user', function () {
 	$user = User::factory()->create();
 	$carOwner = User::factory()->create();
@@ -227,6 +239,28 @@ test('can list associated cars', function () {
 		->assertJson([
 			[
 				'id' => $car->id,
+			]
+		]);
+});
+
+test('can list the users associated with a car', function () {
+	$user = User::factory()->create();
+	$anotherUser = User::factory()->create();
+	$carOwner = User::factory()->create();
+	$car = Car::factory()->create(['owner_id' => $carOwner->id]);
+	$car->associatedUsers()->attach($user->id);
+	$car->associatedUsers()->attach($anotherUser->id);
+
+	$this->actingAs($user)
+		->get('/api/cars/' . $car->id . '/associate')
+		->assertStatus(200)
+		->assertJsonCount(2)
+		->assertJson([
+			[
+				'id' => $user->id,
+			],
+			[
+				'id' => $anotherUser->id,
 			]
 		]);
 });
