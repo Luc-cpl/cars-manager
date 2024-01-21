@@ -4,7 +4,7 @@ namespace App\Services\User;
 
 use App\Events\UserEmailChanged;
 
-class UpdateEmailService extends AbstractUserService
+class UpdateUserEmailService extends AbstractUserService
 {
 	public function handle(int $userId, string $email): void
 	{

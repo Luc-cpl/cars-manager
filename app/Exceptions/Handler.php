@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 use InvalidArgumentException;
 use Throwable;
 
@@ -42,6 +43,11 @@ class Handler extends ExceptionHandler
         $this->renderable(fn (InvalidPasswordException $exception) => response()->json([
             'error' => 'Invalid password',
             'code' => 'invalid_password',
-        ], 400));
+        ], 401));
+
+        $this->renderable(fn (TokenBlacklistedException $exception) => response()->json([
+            'error' => 'Invalid token',
+            'code' => 'invalid_token',
+        ], 401));
     }
 }

@@ -4,7 +4,7 @@ namespace App\Services\User;
 
 use App\Events\UserPasswordChanged;
 
-class UpdatePasswordService extends AbstractUserService
+class UpdateUserPasswordService extends AbstractUserService
 {
 	public function handle(int $userId, string $password): void
 	{

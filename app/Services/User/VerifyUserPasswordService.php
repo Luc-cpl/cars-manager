@@ -4,7 +4,7 @@ namespace App\Services\User;
 
 use App\Exceptions\InvalidPasswordException;
 
-class VerifyPasswordService extends AbstractUserService
+class VerifyUserPasswordService extends AbstractUserService
 {
 	public function handle(int $userId, string $password): void
 	{

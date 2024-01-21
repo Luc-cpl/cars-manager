@@ -20,8 +20,7 @@ Then, you can run the dev environment and migrations.
 
 ## Endpoints
 
-Every request to the API should have the header `Accept` with the value `application/json`.
-All routes needs a JWT token in `Auth` header (bearer auth) except:
+All routes needs a JWT token in `Authorization` header (bearer auth) except:
 * POST /register
 * POST /login
 
@@ -52,7 +51,7 @@ Login with an existing user retrieving a JWT token
 
 ### POST /refresh
 
-Should have the current auth token in Auth header (bearer), this will retturn a new valid token.
+Should have the current auth token in Auth header (bearer), this will return a new valid token.
 
 
 ### POST /logout
@@ -61,11 +60,11 @@ Invalidate current JWT
 
 ## API User Endpoints
 
-### GET /me
+### GET /api/me
 
 Show current user
 
-### PUT /me
+### PUT /api/me
 
 update current user
 
@@ -73,11 +72,12 @@ update current user
 {
   "password": "your_current_password", // *required
   "new_password": "updated_password",
-  "email": "updated_email"
+  "email": "updated_email",
+  "name": "Updated name"
 }
 ```
 
-### GET /users
+### GET /api/users
 
 List the existing users
 Accepted args:
@@ -85,11 +85,11 @@ Accepted args:
 * `limit` (int) - Number of items per page (default is 15)
 * `deleted (bool)` - Return only soft deleted users
 
-### GET /users/{id}
+### GET /api/users/{id}
 
 Retrieve a specific user by ID
 
-### PUT /users/{id}
+### PUT /api/users/{id}
 
 Update a specific user by ID.
 If this request whas made by the same user, it will behave as the `/me` route (same arguments).
@@ -97,22 +97,23 @@ If this request whas made by the same user, it will behave as the `/me` route (s
 ```json
 {
   "password": "updated_password",
-  "email": "updated_email"
+  "email": "updated_email",
+  "name": "Updated name"
 }
 ```
 
-### DELETE /users/{id}
+### DELETE /api/users/{id}
 
 Delete a specific user by ID.
 This is a soft delete, so all the user data will be kept in the database.
 
-### POST /users/{id}/restore
+### POST /api/users/{id}/restore
 
 Restore a specific user by ID.
 
 ## API Cars Endpoints
 
-### GET /cars
+### GET /api/cars
 
 List the existing cars
 Accepted args:
@@ -129,7 +130,7 @@ Examples:
 * `/cars?owner_id=1&associated_id=2` - Return all cars owned by user 1 and associated with user 2
 
 
-### POST /cars
+### POST /api/cars
 
 Create a new car for current user
 
@@ -139,11 +140,11 @@ Create a new car for current user
 }
 ```
 
-### GET /cars/{id}
+### GET /api/cars/{id}
 
 Retrieve the car by ID
 
-### PUT /cars/{id}
+### PUT /api/cars/{id}
 
 Update the car by ID
 
@@ -153,23 +154,23 @@ Update the car by ID
 }
 ```
 
-### DELETE /cars/{id}
+### DELETE /api/cars/{id}
 
 Delete the car by ID (The car is soft delete here)
 
-### POST /cars/{id}/restore
+### POST /api/cars/{id}/restore
 
 Restore the soft deleted car
 
-### DELETE /cars/{id}/force-delete
+### DELETE /api/cars/{id}/force-delete
 
 Completely removes the car by its ID
 
-### GET /cars/{id}/associate
+### GET /api/cars/{id}/associate
 
 Get the list of users associated with this car
 
-### POST /cars/{id}/associate
+### POST /api/cars/{id}/associate
 
 Associate the current user with the car
 It also accepts a `user_id` field allowing set another user.
@@ -180,11 +181,11 @@ It also accepts a `user_id` field allowing set another user.
 }
 ```
 
-### DELETE /cars/{id}/associate
+### DELETE /api/cars/{id}/associate
 
 Deletes the current user assocation with the car
 
-### DELETE /cars/{id}/associate/{user_id}
+### DELETE /api/cars/{id}/associate/{user_id}
 
 Removev a user assocation with the car by user ID
 

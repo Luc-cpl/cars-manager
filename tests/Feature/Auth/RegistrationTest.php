@@ -5,9 +5,13 @@ test('new users can register', function () {
         'name' => 'Test User',
         'email' => 'test@example.com',
         'password' => 'password',
-        'password_confirmation' => 'password',
     ]);
 
     $this->assertAuthenticated();
-    $response->assertNoContent();
+
+    $response->assertStatus(200)->assertJsonStructure([
+        'access_token',
+        'token_type',
+        'expires_in'
+    ]);
 });

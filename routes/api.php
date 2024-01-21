@@ -30,7 +30,8 @@ Route::get('/users', [UserController::class, 'index'])
 
 Route::get('/users/{userId}', [UserController::class, 'show'])
     ->middleware('auth')
-    ->name('users.show');
+    ->name('users.show')
+    ->whereNumber('userId');
 
 /** @todo add user roles */
 Route::put('/users/{userId}', [UserController::class, 'update'])
