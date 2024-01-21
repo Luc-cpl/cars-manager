@@ -13,15 +13,6 @@ class AuthenticatedSessionController extends AbstractController
     use Partials\TokenTrait;
 
     /**
-     * Display the current user.
-     * @todo change to RegisteredUserController
-     */
-    public function __invoke(Request $request): mixed
-	{
-		return $request->user();
-	}
-
-    /**
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): JsonResponse

@@ -55,12 +55,19 @@ abstract class AbstractRepository implements BaseRepositoryInterface
 
     public function create(...$params): object
     {
+        if (is_numeric(array_keys($params)[0])) {
+            throw new InvalidArgumentException('Invalid parameters (params must be named');
+        }
         return $this->model->create($params);
     }
 
     public function update(...$params): void
     {
-        if ($params['id'] ?? false) {
+        if (is_numeric(array_keys($params)[0])) {
+            throw new InvalidArgumentException('Invalid parameters (params must be named');
+        }
+
+        if (!$params['id'] ?? false) {
             throw new InvalidArgumentException('Missing id parameter');
         }
 

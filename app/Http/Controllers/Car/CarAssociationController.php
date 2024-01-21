@@ -15,7 +15,7 @@ class CarAssociationController extends AbstractController
      */
     public function index(Request $request, GetCarAssociatedUsersService $service)
     {
-		return $service->handle($request->route('carId'));
+		  return $service->handle($request->route('carId'));
     }
 
     /**
@@ -23,10 +23,10 @@ class CarAssociationController extends AbstractController
      */
     public function store(Request $request, AssociateCarWithUserService $createCarService)
     {
-		return $createCarService->handle(
-			carId: $request->route('carId'),
-			userId: $request->user()->id,
-		);
+      return $createCarService->handle(
+        carId: $request->route('carId'),
+        userId: $request->user()->id,
+      );
     }
 
     /**
@@ -34,9 +34,9 @@ class CarAssociationController extends AbstractController
      */
     public function destroy(Request $request, DisassociateCarWithUserService $service)
     {
-		return $service->handle(
-			carId: $request->route('carId'),
-			userId: $request->user()->id,
-		);
+      return $service->handle(
+        carId: $request->route('carId'),
+        userId: $request->user()->id,
+      );
     }
 }
