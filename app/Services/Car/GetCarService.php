@@ -10,9 +10,6 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class GetCarService extends AbstractCarService
 {
-	/**
-	 * @todo: Add deleted logic
-	 */
 	public function handle(array $query): Collection
 	{
 		if ($query['associated_id'] ?? false) {
