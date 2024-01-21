@@ -10,12 +10,16 @@ use Illuminate\Http\Request;
 
 class CarAssociationController extends AbstractController
 {
-	/**
+    public function __construct(
+        private GetCarAssociatedUsersService $getService
+    ) {}
+
+    /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, GetCarAssociatedUsersService $service)
+    public function index(Request $request)
     {
-		  return $service->handle($request->route('carId'));
+        return $this->getService->handle($request->route('carId'));
     }
 
     /**
@@ -23,14 +27,16 @@ class CarAssociationController extends AbstractController
      */
     public function store(Request $request, AssociateCarWithUserService $createCarService)
     {
-      $request->validate([
-        'user_id' => ['exists:users,id'],
-      ]);
+        $request->validate([
+            'user_id' => ['exists:users,id'],
+        ]);
 
-      return $createCarService->handle(
-        carId: $request->route('carId'),
-        userId: $request->input('user_id') ?? $request->user()->id,
-      );
+        $createCarService->handle(
+            carId: $request->route('carId'),
+            userId: $request->input('user_id') ?? $request->user()->id,
+        );
+
+        return $this->getService->handle($request->route('carId'));
     }
 
     /**
@@ -38,9 +44,11 @@ class CarAssociationController extends AbstractController
      */
     public function destroy(Request $request, DisassociateCarWithUserService $service)
     {
-      return $service->handle(
-        carId: $request->route('carId'),
-        userId: $request->route('userId') ?? $request->user()->id,
-      );
+        $service->handle(
+            carId: $request->route('carId'),
+            userId: $request->route('userId') ?? $request->user()->id,
+        );
+
+        $this->getService->handle($request->route('carId'));
     }
 }
