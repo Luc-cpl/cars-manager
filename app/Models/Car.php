@@ -29,7 +29,8 @@ class Car extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'owner_id'
+        'owner_id',
+        'name',
     ];
 
     /**

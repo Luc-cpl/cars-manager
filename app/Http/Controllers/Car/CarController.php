@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Car;
 
 use App\Http\Controllers\AbstractController;
 use App\Services\Car\CreateCarService;
+use App\Services\Car\UpdateCarService;
 use App\Services\Car\DeleteCarService;
 use App\Services\Car\GetCarByIdService;
 use App\Services\Car\GetCarService;
@@ -26,10 +27,30 @@ class CarController extends AbstractController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, CreateCarService $createCarService)
+    public function store(Request $request, CreateCarService $service)
     {
-        return $createCarService->handle(
-            ownerId: $request->user()->id
+        $request->validate([
+			'name' => ['required', 'string', 'min:3', 'max:100'],
+        ]);
+
+        return $service->handle(
+            ownerId: $request->user()->id,
+            name: $request->input('name'),
+        );
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function update(Request $request, UpdateCarService $service)
+    {
+        $request->validate([
+			'name' => ['required', 'string', 'min:3', 'max:100'],
+        ]);
+
+        return $service->handle(
+            carId: $request->route('carId'),
+            name: $request->input('name'),
         );
     }
 

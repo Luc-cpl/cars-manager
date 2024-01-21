@@ -16,7 +16,7 @@ class CreateCarService extends AbstractCarService
 	) {
 	}
 
-	public function handle(int $ownerId): Car
+	public function handle(int $ownerId, string $name): Car
 	{
 		$owner = $this->usersRepository->getById($ownerId);
 
@@ -25,7 +25,8 @@ class CreateCarService extends AbstractCarService
 		}
 
 		$car = $this->repository->create(
-			owner_id: $ownerId
+			owner_id: $ownerId,
+			name: $name,
 		);
 
 		event(new CarCreated($car));
