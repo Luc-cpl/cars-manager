@@ -18,6 +18,15 @@ Then, you can run the dev environment and migrations.
 ./vendor/bin/sail artisan migrate
 ```
 
+## Tests
+
+You can run the tests with the following command:
+
+```bash
+./vendor/bin/sail up -d
+./vendor/bin/sail test
+```
+
 ## Endpoints
 
 All routes needs a JWT token in `Authorization` header (bearer auth) except:
