@@ -82,7 +82,7 @@ update current user
 List the existing users
 Accepted args:
 * `page` (int) - Page number
-* `limit` (int) - Number of items per page
+* `limit` (int) - Number of items per page (default is 15)
 * `deleted (bool)` - Return only soft deleted users
 
 ### GET /users/{id}
@@ -117,14 +117,16 @@ Restore a specific user by ID.
 List the existing cars
 Accepted args:
 * `page` (int) - Page number
-* `limit` (int) - Number of items per page
+* `limit` (int) - Number of items per page (default is 15)
 * `deleted (bool)` - Return only soft deleted users
 * `owner_id` - The user ID of the owner
 * `associated_id` - The ID of a user associated with the car
 
 Examples:
+* `/cars?owner_id=1` - Return all cars owned by user 1
+* `/cars?owner_id=1&deleted` - Return all soft deleted cars owned by user 1
+* `/cars?owner_id=1&page=2` - Returns the second page of cars owned by user 1
 * `/cars?owner_id=1&associated_id=2` - Return all cars owned by user 1 and associated with user 2
-* `/cars?owner_id=1` - Return all soft deleted cars owned by user 1 and associated with user 2
 
 
 ### POST /cars
