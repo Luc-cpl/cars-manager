@@ -15,7 +15,7 @@ class GetCarService extends AbstractCarService
 		if ($query['associated_id'] ?? false) {
 			$query['where_has'] = $query['where_has'] ?? [];
 			$query['where_has'][] = [
-				'relation' => 'user_associated_cars',
+				'relation' => 'associatedUsers',
 				'field' => 'user_id',
 				'value' => $query['associated_id'],
 			];
